@@ -29,7 +29,7 @@ public class Departmentmodul {
     public StringBuilder getdata() {
         message = new StringBuilder();
         try {
-            String sql = "SELECT deptid, dept_name, issubdept, subdept, parentdept, lastupdate "
+            String sql = "SELECT deptid, dept_name, issubdept, subdept, lastupdate "
                     + "FROM department";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             ResultSet res = pre.executeQuery();
@@ -49,7 +49,7 @@ public class Departmentmodul {
     public StringBuilder getdatadetail(String field, String key) {
         message = new StringBuilder();
         try {
-            String sql = "SELECT deptid, dept_name, issubdept, subdept, parentdept, lastupdate "
+            String sql = "SELECT deptid, dept_name, issubdept, subdept, lastupdate "
                     + "FROM department WHERE " + field + "::character varying ILIKE ?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setString(1, "%" + key + "%");
@@ -67,16 +67,15 @@ public class Departmentmodul {
         return message;
     }
 
-    public StringBuilder insert(String deptid, String dept_name, String isssubdept, String subdept, String parentdept) {
+    public StringBuilder insert(String deptid, String dept_name, String isssubdept, String subdept) {
         message = new StringBuilder();
         try {
-            String sql = "INSERT INTO department(deptid, dept_name, issubdept, subdept, parentdept,lastupdate) VALUES (?, ?, ?, ?, ?,now());";
+            String sql = "INSERT INTO department(deptid, dept_name, issubdept, subdept,lastupdate) VALUES (?, ?, ?, ?,now());";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setInt(1, Integer.parseInt(deptid));
             pre.setString(2, dept_name);
             pre.setInt(3, Integer.parseInt(isssubdept));
             pre.setInt(4, Integer.parseInt(subdept));
-            pre.setInt(5, Integer.parseInt(parentdept));
             pre.executeUpdate();
             pre.close();
             ch.close();
@@ -90,18 +89,17 @@ public class Departmentmodul {
         return message;
     }
 
-    public StringBuilder update(String deptid, String dept_name, String isssubdept, String subdept, String parentdept, String id) {
+    public StringBuilder update(String deptid, String dept_name, String isssubdept, String subdept,String id) {
         message = new StringBuilder();
         try {
-            String sql = "UPDATE department SET deptid=?, dept_name=?, issubdept=?, subdept=?, parentdept=?"
+            String sql = "UPDATE department SET deptid=?, dept_name=?, issubdept=?, subdept=?"
                     + ",lastupdate=now() WHERE deptid=?;";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setInt(1, Integer.parseInt(deptid));
             pre.setString(2, dept_name);
             pre.setInt(3, Integer.parseInt(isssubdept));
             pre.setInt(4, Integer.parseInt(subdept));
-            pre.setInt(5, Integer.parseInt(parentdept));
-            pre.setInt(6, Integer.parseInt(id));
+            pre.setInt(5, Integer.parseInt(id));
             pre.executeUpdate();
             pre.close();
             ch.close();

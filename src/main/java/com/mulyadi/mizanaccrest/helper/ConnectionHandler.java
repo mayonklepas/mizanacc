@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * @author user
  */
 public class ConnectionHandler {
-    String host="jdbc:postgresql://127.0.0.1:5432/mizanacc";
+    String host="jdbc:postgresql://127.0.0.1:5432/mizanaccdb";
     String user="postgres";
     String password="bk201!@#";
     Connection con;

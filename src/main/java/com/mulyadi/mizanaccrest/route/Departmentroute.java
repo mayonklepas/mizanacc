@@ -62,11 +62,10 @@ public class Departmentroute {
             public Object handle(Request rqst, Response rspns) throws Exception {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 String deptid = rqst.queryParams("deptid");
-                String dept_name = rqst.queryParams("deptid");
-                String isssubdept = rqst.queryParams("deptid");
-                String subdept = rqst.queryParams("deptid");
-                String parentdept = rqst.queryParams("deptid");
-                return modul.insert(deptid, dept_name, isssubdept, subdept, parentdept).toString();
+                String dept_name = rqst.queryParams("dept_name");
+                String isssubdept = rqst.queryParams("issubdept");
+                String subdept = rqst.queryParams("subdept");
+                return modul.insert(deptid, dept_name, isssubdept, subdept).toString();
             }
         });
     }
@@ -77,12 +76,11 @@ public class Departmentroute {
             public Object handle(Request rqst, Response rspns) throws Exception {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 String deptid = rqst.queryParams("deptid");
-                String dept_name = rqst.queryParams("deptid");
-                String isssubdept = rqst.queryParams("deptid");
-                String subdept = rqst.queryParams("deptid");
-                String parentdept = rqst.queryParams("deptid");
+                String dept_name = rqst.queryParams("dept_name");
+                String isssubdept = rqst.queryParams("issubdept");
+                String subdept = rqst.queryParams("subdept");
                 String id = rqst.queryParams("id");
-                return modul.update(deptid, dept_name, isssubdept, subdept, parentdept, id).toString();
+                return modul.update(deptid, dept_name, isssubdept, subdept, id).toString();
             }
         });
     }

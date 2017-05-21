@@ -36,7 +36,7 @@ public class UtilHandler {
                 StringBuilder sbrow = new StringBuilder();
                 for (int i = 1; i <= colcount; i++) {
                     int coltipe = rm.getColumnType(i);
-                    if (coltipe == Types.DATE || coltipe == Types.VARCHAR) {
+                    if (coltipe == Types.DATE || coltipe == Types.VARCHAR || coltipe == Types.TIMESTAMP) {
                         sbrow.append("\"" + rm.getColumnName(i) + "\"" + ":" + "\"" + res.getString(i) + "\"" + ",");
                     } else {
                         sbrow.append("\"" + rm.getColumnName(i) + "\"" + ":" + res.getString(i) + ",");
