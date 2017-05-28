@@ -21,14 +21,18 @@ public class Departmentroute {
 
     public Departmentroute() {
         getdata();
+        getsubdatadata();
         getdetaildata();
+        getfilterdata();
         insertdata();
         updatedata();
         deletedata();
         insertbatch();
         System.out.println("-----Department----");
+        System.out.println("/getsubdepartment");
         System.out.println("/getdepartment");
         System.out.println("/getdetaildepartment");
+        System.out.println("/getfilterdepartment");
         System.out.println("/insertdepartment");
         System.out.println("/updatedepartment");
         System.out.println("/deletedepartment");
@@ -43,15 +47,37 @@ public class Departmentroute {
             }
         });
     }
+    
+    
+    private void getsubdatadata() {
+        Spark.get("/getsubdepartment", new Route() {
+            @Override
+            public Object handle(Request rqst, Response rspns) throws Exception {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                return modul.getsubdata().toString();
+            }
+        });
+    }
 
     private void getdetaildata() {
         Spark.post("/getdetaildepartment", new Route() {
             @Override
             public Object handle(Request rqst, Response rspns) throws Exception {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                String key = rqst.queryParams("key");
+                return modul.getdatadetail(key).toString();
+            }
+        });
+    }
+    
+    private void getfilterdata() {
+        Spark.post("/getfilterdepartment", new Route() {
+            @Override
+            public Object handle(Request rqst, Response rspns) throws Exception {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 String field = rqst.queryParams("field");
                 String key = rqst.queryParams("key");
-                return modul.getdatadetail(field, key).toString();
+                return modul.getdatafilter(field, key).toString();
             }
         });
     }

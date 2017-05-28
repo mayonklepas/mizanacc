@@ -30,7 +30,27 @@ public class Departmentmodul {
         message = new StringBuilder();
         try {
             String sql = "SELECT deptid, dept_name, issubdept, subdept, lastupdate "
-                    + "FROM department";
+                    + "FROM department ORDER BY deptid ASC";
+            PreparedStatement pre = ch.connect().prepareStatement(sql);
+            ResultSet res = pre.executeQuery();
+            sb = u.jsonencodedb(res);
+            pre.close();
+            ch.close();
+            message = sb;
+        } catch (Exception ex) {
+            message.append(ex.getStackTrace().toString());
+            Logger.getLogger(Departmentmodul.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ch.close();
+        }
+        return message;
+    }
+    
+    
+    public StringBuilder getsubdata() {
+        message = new StringBuilder();
+        try {
+            String sql = "SELECT deptid, dept_name FROM department WHERE issubdept=0 ORDER BY deptid ASC";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             ResultSet res = pre.executeQuery();
             sb = u.jsonencodedb(res);
@@ -46,7 +66,7 @@ public class Departmentmodul {
         return message;
     }
 
-    public StringBuilder getdatadetail(String field, String key) {
+    public StringBuilder getdatafilter(String field, String key) {
         message = new StringBuilder();
         try {
             String sql = "SELECT deptid, dept_name, issubdept, subdept, lastupdate "
@@ -66,6 +86,32 @@ public class Departmentmodul {
         }
         return message;
     }
+    
+    
+    public StringBuilder getdatadetail(String key) {
+        message = new StringBuilder();
+        try {
+            String sql = "SELECT deptid, dept_name, issubdept, subdept, lastupdate "
+                    + "FROM department WHERE "
+                    + "deptid::character varying ILIKE ? OR "
+                    + "dept_name ILIKE ? ORDER BY deptid ASC";
+            PreparedStatement pre = ch.connect().prepareStatement(sql);
+            pre.setString(1, "%" + key + "%");
+            pre.setString(2, "%" + key + "%");
+            ResultSet res = pre.executeQuery();
+            sb = u.jsonencodedb(res);
+            pre.close();
+            ch.close();
+            message = sb;
+        } catch (Exception ex) {
+            message.append(u.getexception(ex));
+            Logger.getLogger(Departmentmodul.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ch.close();
+        }
+        return message;
+    }
+    
 
     public StringBuilder insert(String deptid, String dept_name, String isssubdept, String subdept) {
         message = new StringBuilder();

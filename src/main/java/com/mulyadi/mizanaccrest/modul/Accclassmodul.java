@@ -98,7 +98,7 @@ public class Accclassmodul {
     public StringBuilder update(String acc_class_id, String acc_class_name, String id) {
         message = new StringBuilder();
         try {
-            String sql = "UPDATE acc_class SET=acc_class_id=?::integer,acc_class_name=? WHERE acc_class_id=?";
+            String sql = "UPDATE acc_class SET acc_class_id=?,acc_class_name=? WHERE acc_class_id=?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setInt(1, Integer.parseInt(acc_class_id));
             pre.setString(2, acc_class_name);

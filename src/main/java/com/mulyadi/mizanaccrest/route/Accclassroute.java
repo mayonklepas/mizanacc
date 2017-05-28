@@ -78,7 +78,7 @@ public class Accclassroute {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 String acc_class_id=rqst.queryParams("acc_class_id");
                 String acc_class_name=rqst.queryParams("acc_class_name");
-                String id=rqst.queryParams("key");
+                String id=rqst.queryParams("id");
                 return modul.update(acc_class_id, acc_class_name, id).toString();
             }
         });
@@ -89,7 +89,7 @@ public class Accclassroute {
             @Override
             public Object handle(Request rqst, Response rspns) throws Exception {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                String id =rqst.queryParams("key");
+                String id =rqst.queryParams("id");
                 return modul.delete(id).toString();
             }
         });
