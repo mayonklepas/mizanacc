@@ -29,7 +29,7 @@ public class Currencyratemodul {
     public StringBuilder getdata() {
         message = new StringBuilder();
         try {
-            String sql = "SELECT noindex, indextable, currencyid, tanggal, rate, deptid FROM currency_rate;";
+            String sql = "SELECT noindex, indextable, currencyid, tanggal::date, rate, deptid FROM currency_rate;";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             ResultSet res = pre.executeQuery();
             sb = u.jsonencodedb(res);
@@ -48,7 +48,7 @@ public class Currencyratemodul {
     public StringBuilder getdatadetail(String field, String key) {
         message = new StringBuilder();
         try {
-            String sql = "SELECT noindex, indextable, currencyid, tanggal, rate, deptid FROM currency_rate WHERE " + field + "::character varying ILIKE ?";
+            String sql = "SELECT noindex, indextable, currencyid, tanggal::date, rate, deptid FROM currency_rate WHERE " + field + "::character varying ILIKE ?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setString(1, "%" + key + "%");
             ResultSet res = pre.executeQuery();
@@ -72,7 +72,7 @@ public class Currencyratemodul {
                     + " VALUES (?, ?, ?, now(), ?, ?)";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setString(1, noindex);
-            pre.setInt(2, Integer.parseInt(indextable));
+            pre.setInt(2, 1);
             pre.setString(3, currencyid);
             pre.setDouble(4, Double.parseDouble(rate));
             pre.setInt(5, Integer.parseInt(deptid));
@@ -95,7 +95,7 @@ public class Currencyratemodul {
             String sql = "UPDATE currency_rate SET noindex=?, indextable=?, currencyid=?, tanggal=now(), rate=?, deptid=? WHERE noindex=?";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setString(1, noindex);
-            pre.setInt(2, Integer.parseInt(indextable));
+            pre.setInt(2, 2);
             pre.setString(3, currencyid);
             pre.setDouble(4, Double.parseDouble(rate));
             pre.setInt(5, Integer.parseInt(deptid));

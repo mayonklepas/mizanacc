@@ -30,6 +30,7 @@ public class Accconfigroute {
         System.out.println("-----acc config----");
         System.out.println("/getaccconfig");
         System.out.println("/getdetailaccconfig");
+        System.out.println("/getfilteraccconfig");
         System.out.println("/insertaccconfig");
         System.out.println("/updateaccconfig");
         System.out.println("/deleteaccconfig");
@@ -50,9 +51,20 @@ public class Accconfigroute {
             @Override
             public Object handle(Request rqst, Response rspns) throws Exception {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                String key = rqst.queryParams("key");
+                return modul.getdatadetail(key).toString();
+            }
+        });
+    }
+    
+    private void getfilterdata() {
+        Spark.post("/getfilteraccconfig", new Route() {
+            @Override
+            public Object handle(Request rqst, Response rspns) throws Exception {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 String field = rqst.queryParams("field");
                 String key = rqst.queryParams("key");
-                return modul.getdatadetail(field, key).toString();
+                return modul.getdatafilter(field,key).toString();
             }
         });
     }
@@ -73,7 +85,7 @@ public class Accconfigroute {
     }
 
     private void updatedata() {
-        Spark.post("/updateacc", new Route() {
+        Spark.post("/updateaccconfig", new Route() {
             @Override
             public Object handle(Request rqst, Response rspns) throws Exception {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

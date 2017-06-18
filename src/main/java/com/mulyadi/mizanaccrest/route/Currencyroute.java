@@ -22,6 +22,7 @@ public class Currencyroute {
     public Currencyroute() {
         getdata();
         getdetaildata();
+        getfilterdata();
         insertdata();
         updatedata();
         deletedata();
@@ -43,18 +44,32 @@ public class Currencyroute {
             }
         });
     }
-
+    
+    
     private void getdetaildata() {
         Spark.post("/getdetailcurrency", new Route() {
             @Override
             public Object handle(Request rqst, Response rspns) throws Exception {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                String field = rqst.queryParams("field");
                 String key = rqst.queryParams("key");
-                return modul.getdatadetail(field, key).toString();
+                return modul.getdatadetail(key).toString();
             }
         });
     }
+
+    private void getfilterdata() {
+        Spark.post("/getfiltercurrency", new Route() {
+            @Override
+            public Object handle(Request rqst, Response rspns) throws Exception {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                String field = rqst.queryParams("field");
+                String key = rqst.queryParams("key");
+                return modul.getdatafilter(field, key).toString();
+            }
+        });
+    }
+    
+    
 
     private void insertdata() {
         Spark.post("/insertcurrency", new Route() {

@@ -47,7 +47,33 @@ public class Accmodul {
         return message;
     }
 
-    public StringBuilder getdatadetail(String field, String key) {
+    public StringBuilder getdatadetail(String key) {
+        message = new StringBuilder();
+        try {
+            String sql = "SELECT acc_code,acc_name,acc_class_id,isparent,parentacc,"
+                    + "firstparentacc,isactive,acclevel,saldoawal,currencyid,deptid,iskasbank,lastupdate "
+                    + "FROM acc WHERE acc_code ILIKE ? OR "
+                    + "acc_name ILIKE ? OR "
+                    + "saldoawal::character varying ILIKE ? ";
+            PreparedStatement pre = ch.connect().prepareStatement(sql);
+            pre.setString(1, "%" + key + "%");
+            pre.setString(2, "%" + key + "%");
+            pre.setString(3, "%" + key + "%");
+            ResultSet res = pre.executeQuery();
+            sb = u.jsonencodedb(res);
+            pre.close();
+            ch.close();
+            message = sb;
+        } catch (Exception ex) {
+            message.append(u.getexception(ex));
+            Logger.getLogger(Accmodul.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ch.close();
+        }
+        return message;
+    }
+    
+    public StringBuilder getdatafilter(String field, String key) {
         message = new StringBuilder();
         try {
             String sql = "SELECT acc_code,acc_name,acc_class_id,isparent,parentacc,"
@@ -108,10 +134,10 @@ public class Accmodul {
             String saldoawal, String currencyid, String deptid, String iskasbank, String id) {
         message = new StringBuilder();
         try {
-            String sql = "UPDATE acc"
+            String sql = "UPDATE acc "
                     + "SET acc_code=?, acc_name=?, acc_class_id=?, isparent=?, parentacc=?,"
                     + "firstparentacc=?, isactive=?, acclevel=?, saldoawal=?, currencyid=?,"
-                    + "deptid=?, iskasbank=?, lastupdate=? "
+                    + "deptid=?, iskasbank=?, lastupdate=now() "
                     + " WHERE acc_code=?;";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setString(1, acc_code);

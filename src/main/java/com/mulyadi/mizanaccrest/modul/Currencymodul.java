@@ -46,7 +46,42 @@ public class Currencymodul {
         return message;
     }
 
-    public StringBuilder getdatadetail(String field, String key) {
+    public StringBuilder getdatadetail(String key) {
+        message = new StringBuilder();
+        try {
+            String sql = "SELECT noindex, currency_code, currency_name, currency_rate, currency_symbol,country_name, deptid,"
+                    + " lastupdate, indextable FROM currency WHERE noindex::character varying ILIKE ? "
+                    + "OR currency_code ILIKE ? "
+                    + "OR currency_name ILIKE ? "
+                    + "OR currency_rate::character varying ILIKE ? "
+                    + "OR currency_symbol ILIKE ? "
+                    + "OR country_name ILIKE ? "
+                    + "OR deptid::character varying ILIKE ? ORDER BY currency_name";
+            PreparedStatement pre = ch.connect().prepareStatement(sql);
+            pre.setString(1, "%" + key + "%");
+            pre.setString(2, "%" + key + "%");
+            pre.setString(3, "%" + key + "%");
+            pre.setString(4, "%" + key + "%");
+            pre.setString(5, "%" + key + "%");
+            pre.setString(6, "%" + key + "%");
+            pre.setString(7, "%" + key + "%");
+            ResultSet res = pre.executeQuery();
+            sb = u.jsonencodedb(res);
+            pre.close();
+            ch.close();
+            message = sb;
+        } catch (Exception ex) {
+            message.append(u.getexception(ex));
+            Logger.getLogger(Currencymodul.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ch.close();
+        }
+        return message;
+    }
+    
+    
+    
+     public StringBuilder getdatafilter(String field, String key) {
         message = new StringBuilder();
         try {
             String sql = "SELECT noindex, currency_code, currency_name, currency_rate, currency_symbol,country_name, deptid,"
@@ -79,7 +114,7 @@ public class Currencymodul {
             pre.setString(3, currency_name);
             pre.setDouble(4, Double.parseDouble(currency_rate));
             pre.setString(5, currency_symbol);
-            pre.setString(6, currency_name);
+            pre.setString(6, country_name);
             pre.setInt(7, Integer.parseInt(deptid));
             pre.executeUpdate();
             pre.close();
@@ -107,7 +142,7 @@ public class Currencymodul {
             pre.setString(3, currency_name);
             pre.setDouble(4, Double.parseDouble(currency_rate));
             pre.setString(5, currency_symbol);
-            pre.setString(6, currency_name);
+            pre.setString(6, country_name);
             pre.setInt(7, Integer.parseInt(deptid));
             pre.setString(8, id);
             pre.executeUpdate();
