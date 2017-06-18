@@ -29,7 +29,7 @@ public class Accconfigmodul {
     public StringBuilder getdata() {
         message = new StringBuilder();
         try {
-            String sql = "SELECT noindex, acc_code, keterangan, currencyid, deptid FROM acc_config";
+            String sql = "SELECT noindex, acc_code, keterangan, currencyid, deptid FROM acc_config ORDER BY noindex";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             ResultSet res = pre.executeQuery();
             sb = u.jsonencodedb(res);
@@ -45,10 +45,40 @@ public class Accconfigmodul {
         return message;
     }
 
-    public StringBuilder getdatadetail(String field, String key) {
+    public StringBuilder getdatadetail(String key) {
         message = new StringBuilder();
         try {
-            String sql = "SELECT noindex, acc_code, keterangan, currencyid, deptid FROM acc_config WHERE " + field + " ILIKE ? ";
+            String sql = "SELECT noindex, acc_code, keterangan, currencyid, deptid FROM acc_config WHERE "
+                    + "noindex ILIKE ? OR "
+                    + "acc_code ILIKE ? OR "
+                    + "keterangan ILIKE ? OR "
+                    + "currencyid ILIKE ? OR "
+                    + "deptid::character varying ILIKE ? ORDER BY noindex";
+            PreparedStatement pre = ch.connect().prepareStatement(sql);
+            pre.setString(1, "%" + key + "%");
+            pre.setString(2, "%" + key + "%");
+            pre.setString(3, "%" + key + "%");
+            pre.setString(4, "%" + key + "%");
+            pre.setString(5, "%" + key + "%");
+            ResultSet res = pre.executeQuery();
+            sb = u.jsonencodedb(res);
+            pre.close();
+            ch.close();
+            message = sb;
+        } catch (Exception ex) {
+            message.append(u.getexception(ex));
+            Logger.getLogger(Accconfigmodul.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ch.close();
+        }
+        return message;
+    }
+    
+    public StringBuilder getdatafilter(String field, String key) {
+        message = new StringBuilder();
+        try {
+            String sql = "SELECT noindex, acc_code, keterangan, currencyid, deptid FROM acc_config WHERE"
+                    + " "+field+"::character varying ILIKE ? ORDER BY noindex";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setString(1, "%" + key + "%");
             ResultSet res = pre.executeQuery();
@@ -68,7 +98,7 @@ public class Accconfigmodul {
     public StringBuilder insert(String noindex, String acc_code, String keterangan, String currencyid, String deptid) {
         message = new StringBuilder();
         try {
-            String sql = "IINSERT INTO acc_config(noindex, acc_code, keterangan, currencyid, deptid) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO acc_config(noindex, acc_code, keterangan, currencyid, deptid) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement pre = ch.connect().prepareStatement(sql);
             pre.setString(1, noindex);
             pre.setString(2, acc_code);
